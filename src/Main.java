@@ -3,8 +3,12 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+        List<Phoneme> phonemes = processCSV(args[0]);
+    }
+
+    static List<Phoneme> processCSV(String fileName){
         List<Phoneme> phonemes = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(args[0]))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String[] featureNames = reader.readLine().split(",");
             String line;
             while ((line = reader.readLine()) != null) {  //process and store each phoneme
@@ -15,17 +19,13 @@ public class Main {
                     phonemeFeatures.put(featureNames[i],booleanOf(phonemeCells[i]));
                 }
                 phonemes.add(new Phoneme(phonemeName,phonemeFeatures));
-
-
             }
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return phonemes;
     }
-
     static boolean booleanOf(String s){
         if (s.equals("+")) {
             return true;
